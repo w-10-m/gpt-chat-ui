@@ -19,8 +19,12 @@ export default function Chat() {
     });
 
     if (option === "I want to update my workout") {
-      setMessages([...newMessages, { text: option, options: [], isUser: true }, { text: "What needs to be updated?", options: ["I'm injured", "I'm sick", "I need more of a challenge", "I need less of a challenge"], isUser: false }]);
-    } else if (option === "Explain my workout") {
+      setMessages([...newMessages, { text: option, options: [], isUser: true }, { text: "What needs to be updated?", options: ["I need more of a challenge", "I need less of a challenge"], isUser: false }]);
+    } else if (option === "I need less of a challenge") {
+      setMessages([...newMessages, { text: option, options: [], isUser: true }, { text: "No problem! Why do you need less of a challenge?", options: ["I'm unable to complete the workouts", "I'm injured", "I'm sick"], isUser: false }]);
+    } else if (option === "I'm injured") {
+      setMessages([...newMessages, { text: option, options: [], isUser: true }, { text: "What kind of injury?", options: ["Upper Body", "Lower Body"], isUser: false }]);
+    } else if (option === "Explain my workout" || option === "I need a new workout" || option === "I need more of a challenge" || option === "I'm unable to complete the workouts" || option === "I'm sick" || option === "Upper Body" || option === "Lower Body") {
       setMessages([...newMessages, { text: option, options: [], isUser: true }]);
       try {
         const response = await fetch('/v1/gpt/generateChat', {
@@ -29,7 +33,7 @@ export default function Chat() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            message: "explain my workout.",
+            message: option,
             gpt_model: "gemini-1.5-flash",
             gpt_service: "gemini",
             user_id: 19,
@@ -55,7 +59,7 @@ export default function Chat() {
             display: 'inline-block',
             padding: '10px',
             borderRadius: '10px',
-            backgroundColor: message.isUser ? 'green' : 'gray',
+            backgroundColor: message.isUser ? 'green' : 'grey',
             maxWidth: '80%',
             textAlign: 'left'
           }}>
