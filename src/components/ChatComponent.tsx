@@ -113,6 +113,7 @@ export default function Chat() {
         'Your workout has been updated to be less challenging.'
       );
     } else if (option === 'Explain my workout') {
+      setLoading(true);
       try {
         const response = await fetch('/v1/gpt/generateChat', {
           method: 'POST',
@@ -148,6 +149,8 @@ export default function Chat() {
             isUser: false,
           }
         ]);
+      } finally {
+        setLoading(false);
       }
     } else {
       addMessage(newMessages, `You selected: ${option}`, [], true);
@@ -164,7 +167,7 @@ export default function Chat() {
     <div
       style={{
         padding: '20px',
-        width: '800px',
+        width: '600px',
         minWidth: '80%',
         margin: '0 auto',
         backgroundColor: 'white',
